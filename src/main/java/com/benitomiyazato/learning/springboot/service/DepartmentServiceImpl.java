@@ -40,20 +40,34 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> departmentInDatabaseOptional = departmentRepository.findById(departmentId);
         Department departmentInDataBase;
 
-        if(departmentInDatabaseOptional.isPresent()){
-            departmentInDataBase = departmentInDatabaseOptional.get();
-
-            if(departmentUpdate.getDepartmentName() != null & departmentUpdate.getDepartmentName() != ""){
-                departmentInDataBase.setDepartmentName(departmentUpdate.getDepartmentName());
-            }
-            if(departmentUpdate.getDepartmentAddress() != null & departmentUpdate.getDepartmentAddress() != ""){
-                departmentInDataBase.setDepartmentAddress(departmentUpdate.getDepartmentAddress());
-            }
-            if(departmentUpdate.getDepartmentCode() != null & departmentUpdate.getDepartmentCode() != ""){
-                departmentInDataBase.setDepartmentCode(departmentUpdate.getDepartmentCode());
-            }
-            return departmentRepository.save(departmentInDataBase);
+        // if this optional is null, stops here
+        if (departmentInDatabaseOptional.isEmpty()) {
+            return null;
         }
-        return null;
+
+        departmentInDataBase = departmentInDatabaseOptional.get();
+
+        // these conditions make sure you can update only one field of the Department if you want
+        // it does so by checking if each specific field of the request body is null
+        // if it's not null, the field is updated.
+        if (departmentUpdate.getDepartmentName() != null & !departmentUpdate.getDepartmentName().equals("")) {
+            departmentInDataBase.setDepartmentName(departmentUpdate.getDepartmentName());
+        }
+
+        if (departmentUpdate.getDepartmentAddress() != null & !departmentUpdate.getDepartmentName().equals("")) {
+            departmentInDataBase.setDepartmentAddress(departmentUpdate.getDepartmentAddress());
+        }
+
+        if (departmentUpdate.getDepartmentCode() != null & !departmentUpdate.getDepartmentName().equals("")) {
+            departmentInDataBase.setDepartmentCode(departmentUpdate.getDepartmentCode());
+        }
+
+        return departmentRepository.save(departmentInDataBase);
     }
+
+    @Override
+    public Department fetchDepartmentByName(String name) {
+        return departmentRepository.findByDepartmentName(name);
+    }
+
 }
