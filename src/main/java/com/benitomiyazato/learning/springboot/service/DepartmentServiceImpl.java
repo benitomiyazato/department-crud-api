@@ -36,6 +36,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public Department fetchDepartmentByName(String name) throws DepartmentNotFoundException {
+        Department fetchedDepartment = departmentRepository.findDepartmentByDepartmentNameIgnoreCase(name);
+        if (Objects.isNull(fetchedDepartment))
+            throw new DepartmentNotFoundException("There's no such department with this name");
+
+        return fetchedDepartment;
+    }
+
+    @Override
     public void deleteDepartmentById(Long departmentId) {
         departmentRepository.deleteById(departmentId);
     }
@@ -67,14 +76,5 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         return departmentRepository.save(departmentInDataBase);
-    }
-
-    @Override
-    public Department fetchDepartmentByName(String name) throws DepartmentNotFoundException {
-        Department fetchedDepartment = departmentRepository.findDepartmentByDepartmentNameIgnoreCase(name);
-        if(Objects.isNull(fetchedDepartment))
-            throw new DepartmentNotFoundException("There's no such department with this name");
-
-        return fetchedDepartment;
     }
 }
