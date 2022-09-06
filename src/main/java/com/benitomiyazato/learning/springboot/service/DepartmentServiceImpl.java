@@ -69,5 +69,4 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department fetchDepartmentByName(String name) {
         return departmentRepository.findDepartmentByDepartmentNameIgnoreCase(name);
     }
-
 }
