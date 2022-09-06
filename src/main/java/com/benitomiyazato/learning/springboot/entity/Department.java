@@ -12,7 +12,6 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @NotBlank(message = "Department Name cannot be blank")
     private String departmentName;
     private String departmentAddress;
