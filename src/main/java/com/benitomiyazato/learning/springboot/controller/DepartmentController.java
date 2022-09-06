@@ -1,6 +1,7 @@
 package com.benitomiyazato.learning.springboot.controller;
 
 import com.benitomiyazato.learning.springboot.entity.Department;
+import com.benitomiyazato.learning.springboot.error.DepartmentNotFoundException;
 import com.benitomiyazato.learning.springboot.service.DepartmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +31,13 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments/{id}")
-    public Department fetchDepartmentById(@PathVariable("id") Long departmentId) {
+    public Department fetchDepartmentById(@PathVariable("id") Long departmentId) throws DepartmentNotFoundException {
         LOGGER.info(String.format("Fetching department of id %d", departmentId));
         return departmentService.fetchDepartmentById(departmentId);
     }
 
     @GetMapping("/departments/name/{name}")
-    public Department fetchDepartmentByName(@PathVariable("name") String name) {
+    public Department fetchDepartmentByName(@PathVariable("name") String name) throws DepartmentNotFoundException {
         LOGGER.info(String.format("Fetching department of name %s", name));
         return departmentService.fetchDepartmentByName(name);
     }
@@ -51,7 +52,7 @@ public class DepartmentController {
     @PutMapping("/departments/{id}")
     public Department updateDepartment(
             @PathVariable("id") Long departmentId,
-            @RequestBody Department departmentUpdate) {
+            @RequestBody Department departmentUpdate) throws DepartmentNotFoundException {
         LOGGER.info(String.format("Updating department of id %d", departmentId));
         return departmentService.updateDepartment(departmentId, departmentUpdate);
     }

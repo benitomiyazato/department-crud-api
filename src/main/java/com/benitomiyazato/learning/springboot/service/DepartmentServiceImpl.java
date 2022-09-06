@@ -1,11 +1,13 @@
 package com.benitomiyazato.learning.springboot.service;
 
 import com.benitomiyazato.learning.springboot.entity.Department;
+import com.benitomiyazato.learning.springboot.error.DepartmentNotFoundException;
 import com.benitomiyazato.learning.springboot.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,8 +27,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department fetchDepartmentById(Long departmentId) {
+    public Department fetchDepartmentById(Long departmentId) throws DepartmentNotFoundException {
         Optional<Department> fetchedDepartment = departmentRepository.findById(departmentId);
+        if (fetchedDepartment.isEmpty())
+            throw new DepartmentNotFoundException("Department with this ID was not found");
+
         return fetchedDepartment.get();
     }
 
@@ -36,14 +41,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartment(Long departmentId, Department departmentUpdate) {
+    public Department updateDepartment(Long departmentId, Department departmentUpdate) throws DepartmentNotFoundException {
         Optional<Department> departmentInDatabaseOptional = departmentRepository.findById(departmentId);
         Department departmentInDataBase;
 
-        // if this optional is null, stops here
-        if (departmentInDatabaseOptional.isEmpty()) {
-            return null;
-        }
+        if (departmentInDatabaseOptional.isEmpty())
+            throw new DepartmentNotFoundException("There's no such department with this ID");
+
 
         departmentInDataBase = departmentInDatabaseOptional.get();
 
@@ -66,7 +70,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department fetchDepartmentByName(String name) {
-        return departmentRepository.findDepartmentByDepartmentNameIgnoreCase(name);
+    public Department fetchDepartmentByName(String name) throws DepartmentNotFoundException {
+        Department fetchedDepartment = departmentRepository.findDepartmentByDepartmentNameIgnoreCase(name);
+        if(Objects.isNull(fetchedDepartment))
+            throw new DepartmentNotFoundException("There's no such department with this name");
+
+        return fetchedDepartment;
     }
 }
