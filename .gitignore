@@ -6,7 +6,6 @@ target/
 
 *.yml
 application.yml
-src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
@@ -24,7 +23,6 @@ src/main/resources/application.yml
 *.ipr
 *.yml
 application.yml
-src/main/resources/application.yml
 
 ### NetBeans ###
 /nbproject/private/
