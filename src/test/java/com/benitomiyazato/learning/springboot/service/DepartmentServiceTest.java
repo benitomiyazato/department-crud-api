@@ -48,7 +48,6 @@ class DepartmentServiceTest {
         Mockito.when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentModel));
         Mockito.when(departmentRepository.findById(notExistingDepartmentId)).thenReturn(Optional.empty());
     }
-
     @Test
     @DisplayName("Returns department by name if given name exists in the Database")
     public void fetchDepartmentByName_returnDepartment_whenValidDepartmentNameIsGiven() throws DepartmentNotFoundException {
